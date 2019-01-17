@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Navbar, NavbarBrand} from "reactstrap";
-import Catalog from './components/CatalogComponent';
+import Catalog from "./components/CatalogComponent";
 
 class App extends Component {
   render() {
@@ -11,8 +11,8 @@ class App extends Component {
                 <div className="container">
                     <NavbarBrand href="/">Sistema de Seguridad Industrial</NavbarBrand>
                 </div>
-                <Catalog/>
             </Navbar>
+            <Catalog/>
         </div>
     );
   }
