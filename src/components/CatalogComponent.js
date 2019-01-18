@@ -1,84 +1,62 @@
 import React, {Component} from 'react';
-import {Media} from "reactstrap";
+import {Card, CardImg, CardImgOverlay, CardTitle, CardText} from "reactstrap";
 
+//components
+import ItemDetail from './itemDetailComponent'
 class Catalog extends Component {
 
     constructor(props, context) {
         super(props, context);
         this.state = {
-            items: [
-                {
-                    id: 0,
-                    name: 'Helmet',
-                    image: '/assets/images/helmet.jpg',
-                    category: 'safety',
-                    label: 'ultra safe',
-                    price: '4.99',
-                    description: 'Un casco de seguridad útil para proteger en ámbitos como la construcción, fabricas y otros'
-                },
-                {
-                    id: 1,
-                    name: 'Audio protector',
-                    image: '/assets/images/audio.jpg',
-                    category: 'safety',
-                    label: 'noise filter',
-                    price: '12.99',
-                    description: 'Protege de ruidos auditivos por encima de los decibeles considerados aceptables'
-                },
-                {
-                    id: 2,
-                    name: 'Glasses',
-                    image: '/assets/images/glasses.jpg',
-                    category: 'safety',
-                    label: 'New technology',
-                    price: '31.99',
-                    description: 'Permite filtrar rayos ultravioleta, material anti rayas, anti caidas'
-                },
-                {
-                    id: 3,
-                    name: 'Gloves',
-                    image: '/assets/images/gloves.jpg',
-                    category: 'safety',
-                    label: '',
-                    price: '12.99',
-                    description: 'Hechos de algodón con goma antideslizante, especial para industria química.'
-                }
+            selectedItem : null
+        };
 
-            ]
-        }
+        console.log("constructor es invocado");
+    }
+
+    componentDidMount() {
+        console.log("constructor did mount.");
     }
 
     render() {
-        let catalog = this.state.items.map(item => {
-            const imgStyle = {
-                maxHeight: 128,
-                maxWidth: 128
-            };
+        let catalog = this.props.items.map(item => {
             return (
-                <div key={item.id} className="col-12 mt-5">
-                    <Media tag="li">
-                        <Media left middle>
-                            <Media object src={item.image} alt={item.name} style={imgStyle}/>
-                        </Media>
-                        <Media body className="ml-5">
-                            <Media heading>{item.name}</Media>
-                            <p>{item.description}</p>
-                        </Media>
-
-                    </Media>
+                <div key={item.id} className="col-md-5 col-12  mt-5">
+                    <Card onClick={()=>this.onItemSelect(item)}>
+                        <CardImg width="100%" src={item.image} alt={item.name}/>
+                        <CardImgOverlay>
+                            <CardTitle>{item.name}</CardTitle>
+                        </CardImgOverlay>
+                    </Card>
                 </div>
             );
         });
         return (
             <div className="container">
                 <div className="row">
-                    <Media list>
                         {catalog}
-                    </Media>
                 </div>
-
+                <div className="row">
+                        {this.renderItem(this.state.selectedItem)}
+                </div>
             </div>
         );
+    }
+
+    renderItem(item) {
+        if (item != null) {
+            return (
+                <ItemDetail itemDetail={item}/>
+            );
+        } else {
+            return ( <div/>);
+        }
+
+    }
+
+    onItemSelect(item) {
+        console.log("click item");
+        this.setState({selectedItem:item});
     }
 }
 
