@@ -4,11 +4,13 @@ import {Card, CardImg, CardImgOverlay, CardTitle, CardText, CardBody,CardSubtitl
 class ItemDetail extends Component{
     constructor (props, context) {
         super(props,context);
+    
     }
 
     render() {
         const item = this.props.itemDetail;
 
+        
         let comments = item.comments.map(comment => {
             return (
                     <ListGroupItem key={comment.id}>
@@ -23,7 +25,7 @@ class ItemDetail extends Component{
         
         return <div className='ItemDetail'>
                 <div className = 'row'>
-                <div className="col-md-5 col-12  mt-5" >
+                <div className="col-xs-12 col-sm-12 col-md-5 col-12" >
                     <Card >
                         <CardTitle>{item.name}</CardTitle>
                         
@@ -38,17 +40,14 @@ class ItemDetail extends Component{
                         </CardBody>
                 </Card>
                 </div>
-                <div className="col-md-5 col-12  mt-5">
-                    <ListGroup>{comments}</ListGroup>
+                <div className="col-xs-12 col-sm-12 col-md-5 col-12">
+                    <ListGroup>{(comments)?comments:'<div/>'}</ListGroup>
                 </div>
             </div>
             </div>;
     }
 
-    onItemSelect(item) {
-        console.log("click item");
-        this.setState({selectedItem:item});
-    }
+
 }
 
 export default ItemDetail;

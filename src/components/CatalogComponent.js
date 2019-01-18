@@ -36,7 +36,8 @@ class Catalog extends Component {
                 <div className="row">
                         {catalog}
                 </div>
-                <div className="row">
+                <div className="row mt-5 mb-5">
+
                         {this.renderItem(this.state.selectedItem)}
                 </div>
             </div>
