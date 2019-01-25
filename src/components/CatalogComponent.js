@@ -1,64 +1,45 @@
-import React, {Component} from 'react';
-import {Card, CardImg, CardImgOverlay, CardTitle, CardText} from "reactstrap";
+import React from 'react';
+import {Breadcrumb, BreadcrumbItem, Card, CardImg, CardImgOverlay, CardTitle} from "reactstrap";
+import {Link} from "react-router-dom";
 
-//components
-import ItemDetail from './itemDetailComponent'
-class Catalog extends Component {
+function RenderCatalogItem({item, onClick}) {
+    return (
+        <Link to={`/catalog/${item.id}`}>
+            <Card>
+                <CardImg width="100%" src={item.image} alt={item.name}/>
+                <CardImgOverlay>
+                    <CardTitle>{item.name}</CardTitle>
+                </CardImgOverlay>
+            </Card>
+        </Link>
+    );
+}
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            selectedItem : null
-        };
-
-        console.log("constructor es invocado");
-    }
-
-    componentDidMount() {
-        console.log("constructor did mount.");
-    }
-
-    render() {
-        let catalog = this.props.items.map(item => {
-            return (
-                <div key={item.id} className="col-md-5 col-12  mt-5">
-                    <Card onClick={()=>this.onItemSelect(item)}>
-                        <CardImg width="100%" src={item.image} alt={item.name}/>
-                        <CardImgOverlay>
-                            <CardTitle>{item.name}</CardTitle>
-                        </CardImgOverlay>
-                    </Card>
-                </div>
-            );
-        });
+const Catalog = (props) => {
+    var catalog = props.items.map(item => {
         return (
-            <div className="container">
-                <div className="row">
-                        {catalog}
-                </div>
-                <div className="row mt-5 mb-5">
-
-                        {this.renderItem(this.state.selectedItem)}
-                </div>
+            <div key={item.id} className="col-12 col-md-5 m-1">
+                <RenderCatalogItem item={item}/>
             </div>
         );
-    }
-
-    renderItem(item) {
-        if (item != null) {
-            return (
-                <ItemDetail itemDetail={item}/>
-            );
-        } else {
-            return ( <div/>);
-        }
-
-    }
-
-    onItemSelect(item) {
-        console.log("click item");
-        this.setState({selectedItem:item});
-    }
-}
+    });
+    return (
+        <div className="container">
+            <div className="row">
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>Catalog</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>Catalog</h3>
+                    <hr/>
+                </div>
+            </div>
+            <div className="row">
+                {catalog}
+            </div>
+        </div>
+    );
+};
 
 export default Catalog;

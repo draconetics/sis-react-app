@@ -1,53 +1,82 @@
-import React, {Component} from 'react';
-import {Card, CardImg, CardImgOverlay, CardTitle, CardText, CardBody,CardSubtitle,Button,ListGroup,ListGroupItem,ListGroupItemHeading,ListGroupItemText} from "reactstrap";
+import React from 'react';
+import {Breadcrumb, BreadcrumbItem, Card, CardBody, CardImg, CardText, CardTitle} from "reactstrap";
+import {Link} from "react-router-dom";
 
-class ItemDetail extends Component{
-    constructor (props, context) {
-        super(props,context);
-    
+
+function RenderItem({item}) {
+    if (item != null) {
+        return (
+            <Card>
+                <CardImg width="100%" src={item.image} alt={item.name}/>
+                <CardBody>
+                    <CardTitle>{item.name}</CardTitle>
+                    <CardText>{item.description}</CardText>
+                </CardBody>
+            </Card>
+        );
+
+    } else {
+        return (
+            <div/>
+        );
     }
 
-    render() {
-        const item = this.props.itemDetail;
+}
 
-        
-        let comments = item.comments.map(comment => {
+function RenderComments({comments}) {
+    if (comments != null) {
+        const commentsItems = comments.map((comment) => {
             return (
-                    <ListGroupItem key={comment.id}>
-                    <ListGroupItemHeading>{comment.author} - (Rating:{comment.rating})</ListGroupItemHeading>
-                    <ListGroupItemText>{comment.comment}</ListGroupItemText>
-                    </ListGroupItem>
+                <li key={comment.id}>
+                    <ul className="list-unstyled">
+                        <li>{comment.comment}</li>
+                        <li>-- {comment.author} , {new Intl.DateTimeFormat('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: '2-digit'
+                        }).format(new Date(Date.parse(comment.date)))}</li>
+                    </ul>
+                </li>
             );
         });
 
+        return (
+            <div>
+                <h4>Comments</h4>
+                <ul className="list-unstyled">
+                    {commentsItems}
+                </ul>
+            </div>
+        );
+    } else {
+        return (
+            <div/>
+        );
+    }
+}
 
 
-        
-        return <div className='ItemDetail'>
-                <div className = 'row'>
-                <div className="col-xs-12 col-sm-12 col-md-5 col-12" >
-                    <Card >
-                        <CardTitle>{item.name}</CardTitle>
-                        
-                        <CardImg width="100%" src={item.image} alt={item.name}/>
-                        <CardBody>
-                            
-                            <CardSubtitle>Card subtitle</CardSubtitle>
-                            <CardText>{item.description}</CardText>
-                            <Button color="primary">Like</Button>
-
-                            <Button color="secundary">Share</Button>
-                        </CardBody>
-                </Card>
-                </div>
-                <div className="col-xs-12 col-sm-12 col-md-5 col-12">
-                    <ListGroup>{(comments)?comments:'<div/>'}</ListGroup>
+const ItemDetail = (props) => {
+    return (
+        <div className="container">
+            <div className="row">
+                <Breadcrumb>
+                    <BreadcrumbItem><Link to="/catalog">Catalog</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>{props.item.name}</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>{props.item.name}</h3>
+                    <hr/>
                 </div>
             </div>
-            </div>;
-    }
-
-
-}
+            <div className="col-12 col-md-5 m-1">
+                <RenderItem item={props.item}/>
+            </div>
+            <div className="col-12 col-md-5 m-1">
+                <RenderComments comments={props.comments}/>
+            </div>
+        </div>
+    );
+};
 
 export default ItemDetail;
